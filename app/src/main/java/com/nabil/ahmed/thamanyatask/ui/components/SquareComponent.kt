@@ -1,0 +1,167 @@
+package com.nabil.ahmed.thamanyatask.ui.components
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import com.nabil.ahmed.thamanyatask.home.model.res.Content
+
+@Composable
+fun SquareComponent(
+    article: Content,
+    modifier: Modifier = Modifier,
+    onClick: (Content) -> Unit = {}
+) {
+    Card(
+        modifier = modifier
+            .aspectRatio(1f)
+            .clickable { onClick(article) },
+        shape = RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(8.dp)
+    ) {
+        Box {
+            if (article.avatarUrl.isNotBlank()) {
+                AsyncImage(
+                    model = article.avatarUrl,
+                    contentDescription = article.name,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxSize()
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                )
+            }
+
+            // Gradient Overlay
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.Black.copy(alpha = 0.7f)
+                            )
+                        )
+                    )
+            )
+
+            // Score Badge
+            EpisodesBadge(
+                episodeCount = article.episodeCount ?: 0,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(8.dp)
+            )
+
+            // Bottom Content
+            Column(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(12.dp)
+            ) {
+                Text(
+                    text = article.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.White,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Text(
+                    text = article.authorName?: "",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.White.copy(alpha = 0.85f),
+                    maxLines = 1
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = formatDuration(article.duration),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = Color.White.copy(alpha = 0.8f)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun EpisodesBadge(
+    episodeCount: Int,
+    modifier: Modifier = Modifier
+) {
+    Surface(
+        modifier = modifier,
+        shape = RoundedCornerShape(50),
+        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f)
+    ) {
+        Text(
+            text = "Episodes $episodeCount",
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+            style = MaterialTheme.typography.labelMedium,
+            color = Color.White
+        )
+    }
+}
+
+fun formatDuration(seconds: Int): String {
+    val minutes = seconds / 60
+    return "$minutes min read"
+}
+
+
+
+@Preview(showBackground = true)
+@Composable
+fun ArticleSquarePreview() {
+    val article = Content(
+        articleId = "article_001",
+        name = "The Future of AI",
+        authorName = "Tech World",
+        description = "An in-depth look at the future impact of artificial intelligence.",
+        avatarUrl = "file:///android_res/drawable/ic_launcher_foreground",
+        duration = 1200,
+        releaseDate = "2023-05-10T10:00:00Z",
+        score = 300.toDouble(),
+        episodeCount = 200
+    )
+
+    SquareComponent(
+        article = article,
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+    )
+}
