@@ -35,19 +35,17 @@ fun SquareComponent(
     onClick: (Content) -> Unit = {}
 ) {
     Card(
-        modifier = modifier
-            .fillMaxSize()
-            .clickable { onClick(article) },
+        modifier = modifier.clickable { onClick(article) },
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
-        Box {
+        Box(modifier = Modifier.fillMaxSize()) {
             if (article.avatarUrl.isNotBlank()) {
                 AsyncImage(
-                    modifier = modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxSize(),
                     model = article.avatarUrl,
                     contentDescription = article.name,
-                    contentScale = ContentScale.FillWidth,
+                    contentScale = ContentScale.Crop,
                 )
             } else {
                 Box(
@@ -61,13 +59,13 @@ fun SquareComponent(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = Color.Black.copy(alpha = 0.9f)
-//                        Brush.verticalGradient(
-//                            colors = listOf(
-//                                Color.Transparent,
-//                                Color.Black.copy(alpha = 0.9f)
-//                            )
-//                        )
+                    .background(
+                        Brush.verticalGradient(
+                            colors = listOf(
+                                Color.Transparent,
+                                Color.Black.copy(alpha = 0.7f)
+                            )
+                        )
                     )
             )
 
