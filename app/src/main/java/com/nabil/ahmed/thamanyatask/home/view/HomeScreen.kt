@@ -25,6 +25,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.nabil.ahmed.thamanyatask.home.viewmodel.HomePaginationViewModel
 import com.nabil.ahmed.thamanyatask.home.viewmodel.HomeViewModel
 import com.nabil.ahmed.thamanyatask.ui.components.BigSquareComponent
+import com.nabil.ahmed.thamanyatask.ui.components.QueueComponent
 import com.nabil.ahmed.thamanyatask.ui.components.SquareComponent
 import com.nabil.ahmed.thamanyatask.ui.components.SquareWithTitlesAndSubtitles
 import com.nabil.ahmed.thamanyatask.utils.SectionViewType
@@ -93,6 +94,20 @@ fun HomeScreen(
                                     BigSquareComponent(
                                         content,
                                         modifier = Modifier.size(height = 140.dp, width = 240.dp),
+                                        onClick = {}
+                                    )
+                                }
+                            }
+
+                        SectionViewType.QUEUE.type ->
+                            LazyRow(
+                                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                                contentPadding = PaddingValues(horizontal = 0.dp)
+                            ) {
+                                items(section.content) { content ->
+                                    QueueComponent(
+                                        content,
+                                        modifier = Modifier.size(height = 240.dp, width = 300.dp),
                                         onClick = {}
                                     )
                                 }
