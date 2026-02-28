@@ -15,7 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nabil.ahmed.thamanyatask.home.model.res.Content
+import com.nabil.ahmed.thamanyatask.home.view.HomeScreen
 import com.nabil.ahmed.thamanyatask.ui.components.SquareComponent
 import com.nabil.ahmed.thamanyatask.ui.components.SquareWithTitlesAndSubtitles
 import com.nabil.ahmed.thamanyatask.ui.theme.ThamanyaTaskTheme
@@ -28,23 +30,24 @@ class MainActivity : ComponentActivity() {
         setContent {
             ThamanyaTaskTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column {
-                        SquareComponent(
-                            article = article,
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth()
-                        )
-
-                        SquareWithTitlesAndSubtitles(
-                            imageUrl = article.avatarUrl,
-                            title = article.name,
-                            subtitle = article.authorName ?: article.podcastName ?: "",
-                            modifier = Modifier.padding(8.dp),
-                            onClick = { /* ... */ },
-                            duration = article.duration
-                        )
-                    }
+//                    Column {
+//                        SquareComponent(
+//                            article = article,
+//                            modifier = Modifier
+//                                .padding(16.dp)
+//                                .fillMaxWidth()
+//                        )
+//
+//                        SquareWithTitlesAndSubtitles(
+//                            imageUrl = article.avatarUrl,
+//                            title = article.name,
+//                            subtitle = article.authorName ?: article.podcastName ?: "",
+//                            modifier = Modifier.padding(8.dp),
+//                            onClick = { /* ... */ },
+//                            duration = article.duration
+//                        )
+//                    }
+                    HomeScreen()
 //                    Greeting(
 //                        name = "Android",
 //                        modifier = Modifier.padding(innerPadding)

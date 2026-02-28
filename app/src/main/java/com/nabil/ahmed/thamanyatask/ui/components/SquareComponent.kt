@@ -4,16 +4,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -25,7 +21,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,7 +36,7 @@ fun SquareComponent(
 ) {
     Card(
         modifier = modifier
-            .aspectRatio(1f)
+            .fillMaxSize()
             .clickable { onClick(article) },
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(8.dp)
@@ -49,10 +44,10 @@ fun SquareComponent(
         Box {
             if (article.avatarUrl.isNotBlank()) {
                 AsyncImage(
+                    modifier = modifier.fillMaxWidth(),
                     model = article.avatarUrl,
                     contentDescription = article.name,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                    contentScale = ContentScale.FillWidth,
                 )
             } else {
                 Box(
@@ -66,13 +61,13 @@ fun SquareComponent(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                Color.Black.copy(alpha = 0.7f)
-                            )
-                        )
+                    .background(color = Color.Black.copy(alpha = 0.9f)
+//                        Brush.verticalGradient(
+//                            colors = listOf(
+//                                Color.Transparent,
+//                                Color.Black.copy(alpha = 0.9f)
+//                            )
+//                        )
                     )
             )
 
@@ -92,20 +87,20 @@ fun SquareComponent(
             ) {
                 Text(
                     text = article.name,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleSmall,
                     color = Color.White,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
 
-                Text(
-                    text = article.authorName?: "",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.White.copy(alpha = 0.85f),
-                    maxLines = 1
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
+                if (!article.authorName.isNullOrEmpty())
+                    Text(
+                        text = article.authorName,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.White.copy(alpha = 0.85f),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
 
                 Text(
                     text = formatDuration(article.duration),
@@ -130,7 +125,7 @@ private fun EpisodesBadge(
         Text(
             text = "Episodes $episodeCount",
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.labelSmall,
             color = Color.White
         )
     }
@@ -140,7 +135,6 @@ fun formatDuration(seconds: Int): String {
     val minutes = seconds / 60
     return "$minutes min read"
 }
-
 
 
 @Preview(showBackground = true)
