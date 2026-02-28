@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.nabil.ahmed.thamanyatask.home.viewmodel.HomePaginationViewModel
-import com.nabil.ahmed.thamanyatask.home.viewmodel.HomeViewModel
+import com.nabil.ahmed.thamanyatask.search.viewmodel.SearchViewModel
 import com.nabil.ahmed.thamanyatask.ui.components.BigSquareComponent
 import com.nabil.ahmed.thamanyatask.ui.components.QueueComponent
 import com.nabil.ahmed.thamanyatask.ui.components.SquareComponent
@@ -32,7 +32,7 @@ import com.nabil.ahmed.thamanyatask.utils.SectionViewType
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeViewModel = viewModel(),
+    viewModel: SearchViewModel = viewModel(),
     paginationViewModel: HomePaginationViewModel = viewModel(),
     modifier: Modifier
 ) {

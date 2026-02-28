@@ -1,4 +1,4 @@
-package com.nabil.ahmed.thamanyatask.home.model.repo
+package com.nabil.ahmed.thamanyatask.search.model.repo
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -13,15 +13,12 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class HomeRepoImpl @Inject constructor(
-    private val api: HomeApis
-) : HomeRepo {
+class SearchRepoImpl @Inject constructor(
+    private val api: SearchApis
+) : SearchRepo {
 
-    override fun getSectionsPaging(): Flow<PagingData<Section>> = Pager(
-        config = PagingConfig(
-            pageSize = 10,
-            enablePlaceholders = false
-        ),
-        pagingSourceFactory = { SectionsPagingSource(api) }
-    ).flow
+    override fun getSearchSections(): Flow<SectionsRes> = flow {
+        emit(api.getSearchSections())
+    }.flowOn(Dispatchers.IO)
+
 }

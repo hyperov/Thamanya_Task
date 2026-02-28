@@ -7,9 +7,6 @@ import retrofit2.http.Query
 interface HomeApis {
 
     @GET("home_sections")
-    suspend fun getHomeSections(): SectionsRes
-
-    @GET("home_sections")
     suspend fun getHomeSections(@Query("page") page: Int): SectionsRes
 
     companion object {
