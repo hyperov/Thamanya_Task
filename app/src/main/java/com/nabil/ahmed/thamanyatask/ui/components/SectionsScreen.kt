@@ -15,11 +15,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.LazyPagingItems
 import com.nabil.ahmed.thamanyatask.home.model.res.Section
 import com.nabil.ahmed.thamanyatask.home.view.ProgressPlaceholder
-import com.nabil.ahmed.thamanyatask.home.viewmodel.HomePaginationViewModel
 import com.nabil.ahmed.thamanyatask.utils.SectionViewType
 
 @Composable
@@ -27,7 +25,6 @@ fun SectionsScreen(
     isSearchScreen: Boolean,
     lazySections: LazyPagingItems<Section>? = null,
     searchSections: List<Section>? = null,
-    paginationViewModel: HomePaginationViewModel = viewModel(),
     modifier: Modifier
 ) {
 
@@ -38,7 +35,7 @@ fun SectionsScreen(
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
         items(
-            if (!isSearchScreen) lazySections!!.itemCount else searchSections!!.count(),
+            if (!isSearchScreen) lazySections!!.itemCount else searchSections!!.size,
         ) { index ->
             val section = if (!isSearchScreen) lazySections!![index] else searchSections!![index]
             if (section != null) {
@@ -115,6 +112,21 @@ fun SectionsScreen(
                                     )
                                 }
                             }
+
+                    }
+                    val sortedContent = section.content.sortedBy { it.priority }
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        contentPadding = PaddingValues(horizontal = 0.dp)
+                    ) {
+                        items(sortedContent.size) { index ->
+                            val content = sortedContent[index]
+                            SquareComponent(
+                                content,
+                                modifier = Modifier.size(140.dp),
+                                onClick = {}
+                            )
+                        }
                     }
                 }
             } else {
