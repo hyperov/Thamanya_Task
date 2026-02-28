@@ -29,7 +29,7 @@ import coil3.compose.AsyncImage
 import com.nabil.ahmed.thamanyatask.home.model.res.Content
 
 @Composable
-fun SquareComponent(
+fun BigSquareComponent(
     article: Content,
     modifier: Modifier = Modifier,
     onClick: (Content) -> Unit = {}
@@ -70,8 +70,8 @@ fun SquareComponent(
             )
 
             // Score Badge
-            EpisodesBadge(
-                episodeCount = article.episodeCount ?: 0,
+            DurationBadge(
+                duration = article.duration,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
@@ -85,7 +85,7 @@ fun SquareComponent(
             ) {
                 Text(
                     text = article.name,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.titleLarge,
                     color = Color.White,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -94,25 +94,20 @@ fun SquareComponent(
                 if (!article.authorName.isNullOrEmpty())
                     Text(
                         text = article.authorName,
-                        style = MaterialTheme.typography.bodySmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = Color.White.copy(alpha = 0.85f),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
 
-                Text(
-                    text = formatDuration(article.duration),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = Color.White.copy(alpha = 0.8f)
-                )
             }
         }
     }
 }
 
 @Composable
-private fun EpisodesBadge(
-    episodeCount: Int,
+private fun DurationBadge(
+    duration: Int,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -121,23 +116,18 @@ private fun EpisodesBadge(
         color = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f)
     ) {
         Text(
-            text = "Episodes $episodeCount",
+            text = formatDuration(duration),
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-            style = MaterialTheme.typography.labelSmall,
+            style = MaterialTheme.typography.labelLarge,
             color = Color.White
         )
     }
 }
 
-fun formatDuration(seconds: Int): String {
-    val minutes = seconds / 60
-    return "$minutes min read"
-}
-
 
 @Preview(showBackground = true)
 @Composable
-fun SquareComponentPreview() {
+fun BigSquareComponentPreview() {
     val article = Content(
         articleId = "article_001",
         name = "The Future of AI",
@@ -150,7 +140,7 @@ fun SquareComponentPreview() {
         episodeCount = 200
     )
 
-    SquareComponent(
+    BigSquareComponent(
         article = article,
         modifier = Modifier
             .padding(16.dp)
