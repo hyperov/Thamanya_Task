@@ -33,12 +33,13 @@ import com.nabil.ahmed.thamanyatask.utils.SectionViewType
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = viewModel(),
-    paginationViewModel: HomePaginationViewModel = viewModel()
+    paginationViewModel: HomePaginationViewModel = viewModel(),
+    modifier: Modifier
 ) {
 
     val sections = paginationViewModel.sectionsPaging.collectAsLazyPagingItems()
 
-    LazyColumn(
+    LazyColumn(modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(vertical = 16.dp)
     ) {
@@ -79,7 +80,7 @@ fun HomeScreen(
                                     SquareWithTitlesAndSubtitles(
                                         imageUrl = content.avatarUrl,
                                         title = content.name,
-                                        subtitle = content.description,
+                                        subtitle = content.podcastName ?: "",
                                         duration = content.duration,
                                         onClick = {})
                                 }

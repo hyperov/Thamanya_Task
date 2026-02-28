@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,7 +36,7 @@ fun SquareComponent(
 ) {
     Card(
         modifier = modifier.clickable { onClick(article) },
-        shape = RoundedCornerShape(20.dp),
+        shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(8.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -55,15 +55,14 @@ fun SquareComponent(
                 )
             }
 
-            // Gradient Overlay
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
                         Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                Color.Black.copy(alpha = 0.7f)
+                            colorStops = arrayOf(
+                                0.4f to Color.Transparent,
+                                1.0f to Color.Black.copy(alpha = 0.85f)
                             )
                         )
                     )
@@ -77,34 +76,31 @@ fun SquareComponent(
                     .padding(8.dp)
             )
 
-            // Bottom Content
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
-                    .padding(12.dp)
+                    .padding(horizontal = 10.dp, vertical = 10.dp)
             ) {
                 Text(
                     text = article.name,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontWeight = FontWeight.SemiBold
+                    ),
                     color = Color.White,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
 
-                if (!article.authorName.isNullOrEmpty())
+                if (!article.authorName.isNullOrEmpty()) {
+                    Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = article.authorName,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.White.copy(alpha = 0.85f),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White.copy(alpha = 0.7f),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
-
-                Text(
-                    text = formatDuration(article.duration),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = Color.White.copy(alpha = 0.8f)
-                )
+                }
             }
         }
     }
@@ -117,8 +113,8 @@ private fun EpisodesBadge(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(50),
-        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f)
+        shape = RoundedCornerShape(8.dp),
+        color = Color.Black.copy(alpha = 0.6f)
     ) {
         Text(
             text = "Episodes $episodeCount",

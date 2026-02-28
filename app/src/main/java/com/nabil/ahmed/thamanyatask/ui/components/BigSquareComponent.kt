@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -22,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,8 +36,8 @@ fun BigSquareComponent(
 ) {
     Card(
         modifier = modifier.clickable { onClick(article) },
-        shape = RoundedCornerShape(20.dp),
-        elevation = CardDefaults.cardElevation(8.dp)
+        shape = RoundedCornerShape(16.dp),
+        elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             if (article.avatarUrl.isNotBlank()) {
@@ -55,21 +55,19 @@ fun BigSquareComponent(
                 )
             }
 
-            // Gradient Overlay
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
                         Brush.verticalGradient(
-                            colors = listOf(
-                                Color.Transparent,
-                                Color.Black.copy(alpha = 0.7f)
+                            colorStops = arrayOf(
+                                0.5f to Color.Transparent,
+                                1.0f to Color.Black.copy(alpha = 0.9f)
                             )
                         )
                     )
             )
 
-            // Score Badge
             DurationBadge(
                 duration = article.duration,
                 modifier = Modifier
@@ -77,29 +75,41 @@ fun BigSquareComponent(
                     .padding(8.dp)
             )
 
-            // Bottom Content
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
-                    .padding(12.dp)
+                    .padding(horizontal = 14.dp, vertical = 12.dp)
             ) {
                 Text(
                     text = article.name,
-                    style = MaterialTheme.typography.titleLarge,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
                     color = Color.White,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
 
-                if (!article.authorName.isNullOrEmpty())
+                if (!article.authorName.isNullOrEmpty()) {
+                    Spacer(modifier = Modifier.height(2.dp))
                     Text(
                         text = article.authorName,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.White.copy(alpha = 0.85f),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.White.copy(alpha = 0.8f),
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
+                }
 
+                if (article.description.isNotBlank()) {
+                    Spacer(modifier = Modifier.height(1.dp))
+                    Text(
+                        text = article.description,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White.copy(alpha = 0.6f),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
     }
@@ -112,18 +122,24 @@ private fun DurationBadge(
 ) {
     Surface(
         modifier = modifier,
-        shape = RoundedCornerShape(50),
-        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.9f)
+        shape = RoundedCornerShape(8.dp),
+        color = MaterialTheme.colorScheme.tertiary
     ) {
         Text(
-            text = formatDuration(duration),
+            text = formatDurationHoursMinutes(duration),
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-            style = MaterialTheme.typography.labelLarge,
+            style = MaterialTheme.typography.labelMedium,
             color = Color.White
         )
     }
 }
 
+private fun formatDurationHoursMinutes(seconds: Int): String {
+    val totalMinutes = seconds / 60
+    val hours = totalMinutes / 60
+    val minutes = totalMinutes % 60
+    return if (hours > 0) "${hours}h ${minutes}m" else "${minutes}m"
+}
 
 @Preview(showBackground = true)
 @Composable
@@ -134,7 +150,7 @@ fun BigSquareComponentPreview() {
         authorName = "Tech World",
         description = "An in-depth look at the future impact of artificial intelligence.",
         avatarUrl = "file:///android_res/drawable/ic_launcher_foreground",
-        duration = 1200,
+        duration = 36000,
         releaseDate = "2023-05-10T10:00:00Z",
         score = 300.toDouble(),
         episodeCount = 200
