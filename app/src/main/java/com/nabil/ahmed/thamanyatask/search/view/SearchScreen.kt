@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.nabil.ahmed.thamanyatask.search.viewmodel.SearchViewModel
 import com.nabil.ahmed.thamanyatask.ui.components.SectionsScreen
 import com.nabil.ahmed.thamanyatask.utils.ApiState
@@ -24,7 +23,7 @@ import com.nabil.ahmed.thamanyatask.utils.ApiState
 fun SearchScreen(
     searchQuery: String,
     modifier: Modifier = Modifier,
-    viewModel: SearchViewModel = viewModel()
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
     val searchState by viewModel.searchSections.collectAsStateWithLifecycle()
 
