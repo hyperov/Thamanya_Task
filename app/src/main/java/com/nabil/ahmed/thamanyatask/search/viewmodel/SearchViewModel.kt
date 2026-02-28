@@ -3,6 +3,7 @@ package com.nabil.ahmed.thamanyatask.search.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nabil.ahmed.thamanyatask.home.model.res.Section
+import com.nabil.ahmed.thamanyatask.search.model.mapper.toSection
 import com.nabil.ahmed.thamanyatask.search.model.repo.SearchRepo
 import com.nabil.ahmed.thamanyatask.utils.ApiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,13 +22,16 @@ class SearchViewModel @Inject constructor(
     private val _searchSections = MutableStateFlow<ApiState<List<Section>>>(ApiState.Empty)
     val searchSections: StateFlow<ApiState<List<Section>>> = _searchSections.asStateFlow()
 
-
     fun getSearchSections(searchText: String) {
         viewModelScope.launch {
             _searchSections.value = ApiState.Loading
             searchRepo.getSearchSections()
                 .catch { e -> _searchSections.value = ApiState.Error(e.message ?: "Unknown error") }
-                .collect { data -> _searchSections.value = ApiState.Success(data.sections) }
+                .collect { data ->
+                    _searchSections.value = ApiState.Success(
+                        data.sections.map { it.toSection() }
+                    )
+                }
         }
     }
 
