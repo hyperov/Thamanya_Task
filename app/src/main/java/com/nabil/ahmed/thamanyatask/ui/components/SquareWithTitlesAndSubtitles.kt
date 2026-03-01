@@ -40,62 +40,65 @@ fun SquareWithTitlesAndSubtitles(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
-    Row(
-        modifier = modifier
-            .width(300.dp)
-            .padding(8.dp)
-            .clickable(onClick = onClick),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Box(
-            modifier = Modifier
-                .size(56.dp)
+    Surface(shape = RoundedCornerShape(10.dp)) {
+        Row(
+            modifier = modifier
+                .width(300.dp)
+                .background(color = MaterialTheme.colorScheme.secondary)
                 .clip(RoundedCornerShape(10.dp))
+                .padding(8.dp)
+                .clickable(onClick = onClick),
+            verticalAlignment = Alignment.Top
         ) {
-            if (imageUrl.isNotBlank()) {
-                AsyncImage(
-                    model = imageUrl,
-                    contentDescription = title,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-            } else {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.surfaceVariant)
-                )
+            Box(
+                modifier = Modifier
+                    .size(56.dp)
+                    .clip(RoundedCornerShape(10.dp))
+            ) {
+                if (imageUrl.isNotBlank()) {
+                    AsyncImage(
+                        model = imageUrl,
+                        contentDescription = title,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                    )
+                }
             }
-        }
-        Spacer(modifier = Modifier.width(12.dp))
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Medium,
-                color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(
+                modifier = Modifier.weight(1f),
             ) {
                 Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    text = title,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Medium,
+                    color = Color.White,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Duration2Badge(
-                    duration = formatDurationCompact(duration),
-                    modifier = Modifier
-                )
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = subtitle,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.White,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    Duration2Badge(
+                        duration = formatDurationCompact(duration),
+                        modifier = Modifier
+                    )
 
+                }
             }
         }
     }
@@ -119,9 +122,9 @@ private fun Duration2Badge(
     ) {
         Text(
             text = duration,
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
             style = MaterialTheme.typography.labelSmall,
-            color = Color.White
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }
