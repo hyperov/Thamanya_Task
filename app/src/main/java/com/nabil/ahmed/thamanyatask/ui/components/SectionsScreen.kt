@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -41,7 +42,7 @@ fun SectionsScreen(
             if (section != null) {
                 Column(modifier = Modifier.padding(horizontal = 16.dp)) {
 
-                    Text(text = section.name)
+                    Text(text = section.name, color = MaterialTheme.colorScheme.primary)
                     Spacer(modifier = Modifier.height(8.dp))
 
                     when (section.type) {
@@ -77,6 +78,7 @@ fun SectionsScreen(
                                         title = content.name,
                                         subtitle = content.podcastName ?: "",
                                         duration = content.duration,
+                                        authorName = content.authorName ?: "",
                                         onClick = {}
                                     )
                                 }

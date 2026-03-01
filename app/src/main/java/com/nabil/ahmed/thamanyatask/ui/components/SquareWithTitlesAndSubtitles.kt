@@ -35,8 +35,9 @@ import coil3.compose.AsyncImage
 fun SquareWithTitlesAndSubtitles(
     imageUrl: String,
     title: String,
-    subtitle: String,
+    subtitle: String?,
     duration: Int,
+    authorName: String,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
@@ -87,7 +88,7 @@ fun SquareWithTitlesAndSubtitles(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        text = subtitle,
+                        text = if(subtitle.isNullOrEmpty()) authorName else subtitle,
                         style = MaterialTheme.typography.bodySmall,
                         color = Color.White,
                         maxLines = 1,
@@ -122,7 +123,7 @@ private fun Duration2Badge(
     ) {
         Text(
             text = duration,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.primary
         )
@@ -137,6 +138,7 @@ private fun SquareWithTitlesRowPreview() {
         title = "State of the World from NPR",
         subtitle = "A human perspective on global stories",
         modifier = Modifier.padding(16.dp),
-        duration = 200
+        duration = 200,
+        authorName = "SAN TSU"
     )
 }
