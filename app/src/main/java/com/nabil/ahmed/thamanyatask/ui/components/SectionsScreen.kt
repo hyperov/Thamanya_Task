@@ -114,18 +114,19 @@ fun SectionsScreen(
                             }
 
                     }
-                    val sortedContent = section.content.sortedBy { it.priority }
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        contentPadding = PaddingValues(horizontal = 0.dp)
-                    ) {
-                        items(sortedContent.size) { index ->
-                            val content = sortedContent[index]
-                            SquareComponent(
-                                content,
-                                modifier = Modifier.size(140.dp),
-                                onClick = {}
-                            )
+                    if(isSearchScreen) {
+                        LazyRow(
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            contentPadding = PaddingValues(horizontal = 0.dp)
+                        ) {
+                            items(section.content.size) { index ->
+                                val content = section.content[index]
+                                BigSquareComponent(
+                                    content,
+                                    modifier = Modifier.size(height = 140.dp, width = 240.dp),
+                                    onClick = {}
+                                )
+                            }
                         }
                     }
                 }

@@ -38,6 +38,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.nabil.ahmed.thamanyatask.home.view.HomeScreen
 import com.nabil.ahmed.thamanyatask.search.view.SearchScreen
 import com.nabil.ahmed.thamanyatask.search.viewmodel.SearchViewModel
@@ -51,9 +52,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ThamanyaTaskTheme {
-                var searchQuery by remember { mutableStateOf("") }
-                var searchActive by remember { mutableStateOf(false) }
                 val searchViewModel: SearchViewModel = hiltViewModel()
+                val searchQuery by searchViewModel.query.collectAsStateWithLifecycle()
+                var searchActive by remember { mutableStateOf(false) }
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize(),
@@ -66,7 +67,7 @@ class MainActivity : ComponentActivity() {
                                 navigationIcon = {
                                     IconButton(onClick = {
                                         searchActive = false
-                                        searchQuery = ""
+                                        searchViewModel.updateQuery("")
                                     }) {
                                         Icon(
                                             Icons.AutoMirrored.Filled.ArrowBack,
@@ -77,17 +78,11 @@ class MainActivity : ComponentActivity() {
                                 title = {
                                     TextField(
                                         value = searchQuery,
-                                        onValueChange = { searchQuery = it },
+                                        onValueChange = { searchViewModel.updateQuery(it) },
                                         placeholder = { Text("بحث") },
                                         singleLine = true,
                                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                                        keyboardActions = KeyboardActions(
-                                            onSearch = {
-                                                if (searchQuery.isNotBlank()) {
-                                                    searchViewModel.getSearchSections(searchQuery)
-                                                }
-                                            }
-                                        ),
+                                        keyboardActions = KeyboardActions(onSearch = { }),
                                         colors = TextFieldDefaults.colors(
                                             focusedContainerColor = Color.Transparent,
                                             unfocusedContainerColor = Color.Transparent,
@@ -101,7 +96,7 @@ class MainActivity : ComponentActivity() {
                                 },
                                 actions = {
                                     if (searchQuery.isNotEmpty()) {
-                                        IconButton(onClick = { searchQuery = "" }) {
+                                        IconButton(onClick = { searchViewModel.updateQuery("") }) {
                                             Icon(
                                                 Icons.Filled.Clear,
                                                 contentDescription = "Clear"
